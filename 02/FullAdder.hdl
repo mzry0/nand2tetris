@@ -15,15 +15,27 @@ CHIP FullAdder {
     PARTS:
     // Put you code here:
 	//Sum
+	
+	/**
 	Not(in = c, out = nc);
 	Xor(a = a, b = b, out = xor);
 	Not(in = xor, out = nxor);
 	And(a = nc, b = xor, out = sumt1);
 	And(a = c, b = nxor, out = sumt2);
 	Or(a = sumt1, b = sumt2, out = sum);
+	*/
+	
+	HalfAdder(a = a, b = b, sum = tmp1, carry = tmp2);
+	HalfAdder(a = tmp1, b = c, sum = sum, carry = tmp3);
 	
 	//Carry
+	/**
+	
 	And(a = xor, b = c, out = carryt1);
 	And(a = a, b = b, out = carryt2);
 	Or(a = carryt1, b = carryt2, out = carry);
+	
+	*/
+	
+	Or(a = tmp2, b = tmp3, out = carry);
 }

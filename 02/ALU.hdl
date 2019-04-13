@@ -43,6 +43,34 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+   
+   //And16(a = x, b = false, out = zerx);
+   Mux16(a = x, b = false, sel = zx, out = tmp1);
+   Not16(in = tmp1, out = tmp2);
+   Mux16(a = tmp1, b = tmp2, sel = nx, out = tmp3);
+   
+   //And16(a = y, b = false, out = zery);
+   Mux16(a = y, b = false, sel = zy, out = tmp11);
+   Not16(in = tmp11, out = tmp22);
+   Mux16(a = tmp11, b = tmp22, sel = ny, out = tmp33);
+   
+   And16(a = tmp33, b = tmp3, out = andxy);
+   Add16(a = tmp33, b = tmp3, out = sumxy);
+   Mux16(a = andxy, b = sumxy, sel = f, out = tmpout);
+   
+   Not16(in = tmpout, out = negout);
+   Mux16(a = tmpout, b = negout, sel = no, out = out, out[0..7] = out1, out[8..15] = out2, out[15] = ng);
+   
+   Or8Way(in = out1, out = tem1);
+   Or8Way(in = out2, out = tem2);
+   Or(a = tem1, b = tem2, out = notzr);
+   Not(in = notzr, out = zr);
+   
+   
+   
+   
+
+/**
    Not(in = zx, out = notzx);
    And16One(a = x, b = notzx, out = xpin1);
    Xor(a = xpin1, b = nx, out = xpin2);
@@ -57,6 +85,6 @@ CHIP ALU {
    And(a = testOut, b = true, out = ng);
    Or16Way(in = testOut, out = tempZr);
    Not(in = tempZr, out = zr);
-   
+*/   
    
 }

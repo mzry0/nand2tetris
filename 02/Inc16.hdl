@@ -15,6 +15,8 @@ CHIP Inc16 {
     PARTS:
    // Put you code here:
    
+/**
+   
    HalfAdder(a = in[0], b = true, sum = out[0], carry = c1);
    HalfAdder(a = in[1], b = c1, sum = out[1], carry = c2);
    HalfAdder(a = in[2], b = c2, sum = out[2], carry = c3);
@@ -31,4 +33,9 @@ CHIP Inc16 {
    HalfAdder(a = in[13], b = c13, sum = out[13], carry = c14);
    HalfAdder(a = in[14], b = c14, sum = out[14], carry = c15);
    HalfAdder(a = in[15], b = c15, sum = out[15]);
+   
+*/ 
+
+   Add16(a = in, b[0] = true, out = out);
+  
 }
