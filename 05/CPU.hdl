@@ -39,5 +39,36 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+    //DMux(in = true, sel = instruction[15], a = loadA, b = loadD);	//choose between a and d registers
+	
+	//ARegister(in[15] = 0, in[0..14] = instruction, load = loadA??, out = outA, out = addressM);
+	ARegister(in = inputA, load = loadA, out[0..14] = addressM, out = outA);
+	DRegister(in = inputD, load = loadD, out = outB);
+	Mux16(a = outA, b = inM, sel = instruction[12], out = input2);
+	ALU(x = outB, y = input2, zx = instruction[11], nx = instruction[10], zy = instruction[9], ny = instruction[8], f = instruction[7], no = instruction[6], out = outALU, zr = outzr , ng = outng);
+	Mux16(a[15] = false, a[0..14] = instruction[0..14], b = outALU, sel = instruction[15], out = inputA); 		//input for a reg
+	Not(in = instruction[15], out = ninst);
+	Or(a = instruction[5], b = ninst, out = loadA);		//load bit for a reg
+	Mux16(a = instruction, b = outALU, sel = instruction[4], out = inputD);
+	And(a = instruction[4], b = instruction[15], out = loadD);
+	And(a = instruction[3], b = instruction[15], out = writeM);
+	Mux16(a = inM, b = outALU, sel = instruction[3], out = outM);
+	Or(a = outng, b = outzr, out = tmp);
+	Not(in = tmp, out = outpst);
+	And(a = outng, b = instruction[2], out = and1);
+	And(a = outzr, b = instruction[1], out = and2);
+	And(a = outpst, b = instruction[0], out = and3);
+	Or(a = and1, b = and2, out = or1);
+	Or(a = and3, b = or1, out = jum);
+	And(a = instruction[15], b = jum, out = jump);
+	Or(a = jump, b = reset, out = noinc);
+	Not(in = noinc, out = inc);
+	PC(in = outA, load = jump, inc = inc, reset = reset, out[0..14] = pc);
+	
+	
+	
+	
+	
+	
+	
 }
